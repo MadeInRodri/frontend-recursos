@@ -20,7 +20,7 @@ export default function TabsLayout() {
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: "#16a34a", // Verde activo (nuestra paleta)
+        tabBarActiveTintColor: "#16a34a", // Verde activo
         tabBarInactiveTintColor: "#9ca3af", // Gris inactivo
         headerStyle: { backgroundColor: "#16a34a" }, // Header verde
         headerTintColor: "#ffffff",
@@ -68,13 +68,13 @@ const styles = StyleSheet.create({
     marginRight: 16,
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "#15803d", // Verde un poco más oscuro que el header
+    backgroundColor: "#15803d",
     paddingHorizontal: 12,
     paddingVertical: 6,
-    borderRadius: 9999, // Pill shape (rounded-full)
+    borderRadius: 9999, // Pill shape
   },
   logoutButtonPressed: {
-    opacity: 0.7, // Simula el active:opacity-70
+    opacity: 0.7,
   },
   logoutText: {
     color: "#ffffff",

@@ -59,7 +59,19 @@ export const eliminarRecurso = async (id: number) => {
 // Obtener la lista de recursos favoritos del estudiante
 export const getFavoritos = async () => {
   const response = await api.get("/api/recursos/favoritos");
-  return response.data as Recurso[];
+  const data: unknown = response.data;
+  const recursos =
+    typeof data === "object" && data !== null && "recursos" in data
+      ? data.recursos
+      : undefined;
+
+  if (!Array.isArray(recursos)) {
+    throw new Error(
+      "La API de favoritos devolvió un formato inesperado; se esperaba una propiedad 'recursos' con una lista.",
+    );
+  }
+
+  return recursos as Recurso[];
 };
 
 // Agregar un recurso a la lista de favoritos
