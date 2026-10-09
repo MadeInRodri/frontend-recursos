@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { create } from "zustand";
 import { createJSONStorage, persist } from "zustand/middleware";
 
-// Definimos la estructura del usuario basada en lo que devuelve la API[cite: 2]
+// Definimos la estructura del usuario basada en lo que devuelve la API
 interface User {
   id: number;
   correo: string;
