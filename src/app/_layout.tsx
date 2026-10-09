@@ -1,18 +1,40 @@
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useColorScheme } from 'react-native';
+import { Slot, useRouter, useSegments } from "expo-router";
+import { useEffect } from "react";
+import { View } from "react-native";
+import Toast from "react-native-toast-message";
+import { customToastConfig } from "../config/toastConfig";
+import { useAuthStore } from "../store/useAuthStore";
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
-import AppTabs from '@/components/app-tabs';
+export default function RootLayout() {
+  const { token, user } = useAuthStore();
+  const segments = useSegments();
+  const router = useRouter();
 
-SplashScreen.preventAutoHideAsync();
+  useEffect(() => {
+    // Verificamos si estamos en el grupo de rutas de autenticación
+    const inAuthGroup = segments[0] === "(auth)";
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+    if (!token && !inAuthGroup) {
+      // Si NO hay token y no está en la pantalla de login/registro, lo enviamos al login
+      // El setTimeout ayuda a evitar errores de enrutamiento durante el renderizado inicial
+      setTimeout(() => {
+        router.replace("/(auth)/login");
+      }, 0);
+    } else if (token && inAuthGroup) {
+      // Si HAY token y está intentando acceder al login, lo enviamos adentro de la app
+      setTimeout(() => {
+        router.replace("/(tabs)/recursos");
+      }, 0);
+    }
+  }, [token, segments]);
+
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <AppTabs />
-    </ThemeProvider>
+    <View style={{ flex: 1 }}>
+      {/* Slot renderiza las pantallas hijas de la ruta actual */}
+      <Slot />
+
+      {/* Toast se coloca al final para que aparezca por encima de todo */}
+      <Toast config={customToastConfig} />
+    </View>
   );
 }
