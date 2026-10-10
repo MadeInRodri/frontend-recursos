@@ -159,7 +159,7 @@ EAS puede solicitar configuración de credenciales de firma. Para publicar en Go
 
 ## 6. Enlaces del proyecto
 
-- **Repositorio del frontend:** [MadeInRodri/frontend-recursos](https://github.com/MadeInRodri/frontend-recursos)
-- **Repositorio de la API:** [MadeInRodri/api-recursos](https://github.com/MadeInRodri/api-recursos)
-- **URL publicada del frontend:** pendiente de despliegue.
-- **URL publicada de la API:** pendiente de publicación según la documentación del backend.
+- **Repositorio de esta API:** [MadeInRodri/api-recursos](https://github.com/MadeInRodri/api-recursos)
+- **Deploy de la API:** [Railway(api-recursos)](https://api-recursos-production.up.railway.app)
+- **Repositorio de la aplicación móvil:** [MadeInRodri/frontend-recursos](https://github.com/MadeInRodri/frontend-recursos)
+- **Video explicativo:** [MadeInRodri/api-recursos](https://youtu.be/OWIHBBx5LD0)
