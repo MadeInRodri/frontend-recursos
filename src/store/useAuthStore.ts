@@ -20,6 +20,37 @@ interface AuthState {
   logout: () => void;
 }
 
+function getRoleFromToken(token: string): string | undefined {
+  const encodedPayload = token.split(".")[1];
+  if (!encodedPayload) return undefined;
+
+  try {
+    const base64Payload = encodedPayload
+      .replace(/-/g, "+")
+      .replace(/_/g, "/")
+      .padEnd(Math.ceil(encodedPayload.length / 4) * 4, "=");
+    const decodedPayload = globalThis.atob(base64Payload);
+    const jsonPayload = decodeURIComponent(
+      Array.from(decodedPayload, (character) =>
+        `%${character.charCodeAt(0).toString(16).padStart(2, "0")}`,
+      ).join(""),
+    );
+    const claims = JSON.parse(jsonPayload) as {
+      rol?: unknown;
+      role?: unknown;
+    };
+    const role = claims.rol ?? claims.role;
+
+    return typeof role === "string" ? role : undefined;
+  } catch (error) {
+    console.warn(
+      "No se pudo leer el rol del JWT; se usará el rol de la respuesta de login.",
+      error,
+    );
+    return undefined;
+  }
+}
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set) => ({
@@ -30,11 +61,13 @@ export const useAuthStore = create<AuthState>()(
       login: (token, userData) => {
         // Extraemos el nombre cortando el string por la arroba
         const nombreExtraido = userData.correo.split("@")[0];
+        const rol = getRoleFromToken(token) ?? userData.rol;
 
         set({
           token,
           user: {
             ...userData,
+            rol,
             nombre: nombreExtraido,
           },
         });

@@ -1,56 +1,165 @@
-# Welcome to your Expo app 👋
+# Aplicación de Recursos de Aprendizaje
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Aplicación multiplataforma para consultar recursos educativos. Estudiantes pueden explorar recursos, guardarlos en favoritos y calificarlos; docentes pueden crear, actualizar y eliminar recursos. La aplicación móvil y web consume la API REST de [api-recursos](https://github.com/MadeInRodri/api-recursos).
 
-## Get started
+## 1. Información del estudiante y contexto
 
-1. Install dependencies
+### Información académica
 
-   ```bash
-   npm install
-   ```
+- **Estudiante:** Rodrigo Alexis Mejía Rivas
+- **Institución:** Universidad Don Bosco
+- **Carrera o programa:** Ing. en Ciencias de la computación
+- **Asignatura:** Desarrollo de Software Multiplataforma
+- **Docente:** Alexander Alberto Siguenza Campos
+- **Periodo académico:** 4to año - 2do ciclo
 
-2. Start the app
+### Contexto de la aplicación
 
-   ```bash
-   npx expo start
-   ```
+El frontend ofrece interfaces según el rol seleccionado al registrarse: **Estudiante** o **Docente**. La sesión se inicia con la API y se conserva localmente para que la navegación dirija al usuario a las pantallas correspondientes a su rol.
 
-In the output, you'll find options to open the app in a
+La aplicación puede ejecutarse en Android, iOS y web. El backend y su base de datos se despliegan por separado; este proyecto no incluye un servidor ni una base de datos.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## 2. Tecnologías y arquitectura
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+### Tecnologías principales
 
-## Get a fresh project
+| Tecnología o librería                | Uso en el proyecto                                                                          |
+| ------------------------------------ | ------------------------------------------------------------------------------------------- |
+| **Expo SDK 57**                      | Herramientas y módulos para desarrollar la aplicación multiplataforma.                      |
+| **React Native 0.86** y **React 19** | Interfaz para Android, iOS y web.                                                           |
+| **Expo Router**                      | Navegación basada en archivos y grupos de rutas para autenticación, estudiantes y docentes. |
+| **TypeScript 6**                     | Tipado estático; el proyecto tiene `strict` activado.                                       |
+| **Axios**                            | Comunicación HTTP con la API REST.                                                          |
+| **Zustand**                          | Estado global de autenticación.                                                             |
+| **AsyncStorage**                     | Persistencia local del estado de sesión a través del middleware de persistencia de Zustand. |
+| **React Hook Form**                  | Gestión y validación de formularios de autenticación y recursos.                            |
+| **React Native Toast Message**       | Notificaciones de éxito, error e información.                                               |
+| **Expo Vector Icons**                | Iconos de la interfaz.                                                                      |
+| **React Native Web**                 | Compatibilidad con la plataforma web.                                                       |
 
-When you're ready, run:
+El proyecto también declara módulos de Expo y React Native para enlaces, imágenes, pantalla de inicio, fuentes, gestos, animaciones, áreas seguras y navegación nativa. Las dependencias y versiones instaladas se encuentran en [`package.json`](./package.json).
 
-```bash
-npm run reset-project
+### Organización
+
+```text
+src/
+├── app/
+│   ├── _layout.tsx             # Layout raíz y control de sesión/rutas
+│   ├── index.tsx               # Redirección inicial por estado y rol
+│   ├── (auth)/                 # Inicio de sesión y registro
+│   ├── (tabs)/                 # Recursos y favoritos del estudiante
+│   └── (docente)/              # Gestión de recursos del docente
+├── config/
+│   └── toastConfig.tsx         # Apariencia de las notificaciones
+├── services/
+│   ├── api.ts                  # Cliente HTTP e inclusión del token
+│   └── recursos.ts             # Tipos y operaciones de recursos
+├── store/
+│   └── useAuthStore.ts         # Sesión persistida con Zustand
+└── styles/
+    └── global.css              # Variables globales de estilos web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Las pantallas viven en `src/app/`, donde los grupos `(auth)`, `(tabs)` y `(docente)` organizan los flujos por función y rol. La capa `services` encapsula las solicitudes HTTP; el almacén de autenticación persiste el token y el usuario en el dispositivo. El layout raíz espera a que se restaure la sesión antes de redirigir al inicio de sesión o a la pantalla correspondiente.
 
-### Other setup steps
+## 3. Instalación y configuración local
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+### Requisitos previos
 
-## Learn more
+- Node.js y npm.
+- Un emulador/dispositivo Android o iOS para probar la app nativa, o un navegador para probar la versión web.
+- Una instancia accesible de la API de recursos.
 
-To learn more about developing your project with Expo, look at the following resources:
+### Obtener e instalar el proyecto
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+git clone https://github.com/MadeInRodri/frontend-recursos.git
+cd frontend-recursos
+npm install
+```
 
-## Join the community
+### Configurar la conexión con la API
 
-Join our community of developers creating universal apps.
+Crea un archivo `.env` en la raíz del proyecto:
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+```dotenv
+EXPO_PUBLIC_API_URL=https://tu-api.example.com
+```
+
+Configura el valor como la URL base del backend, sin añadir `/api` al final. Para desarrollo local, reemplaza el ejemplo por la dirección donde la API sea accesible. En un teléfono físico, `localhost` apunta al propio teléfono; usa una dirección de red accesible desde el dispositivo o una URL HTTPS.
+
+Las variables `EXPO_PUBLIC_*` se incorporan al código cliente y no son secretas. No guardes contraseñas, claves privadas ni credenciales en ellas. El `.env` está excluido del control de versiones por [`.gitignore`](./.gitignore).
+
+### Ejecutar la aplicación
+
+Inicia Expo:
+
+```bash
+npm run start
+```
+
+También puedes iniciar directamente una plataforma:
+
+```bash
+npm run android
+npm run ios
+npm run web
+```
+
+Los comandos de Android e iOS requieren el entorno de desarrollo correspondiente o un dispositivo conectado. Para abrir la aplicación web en el navegador se usa el script `web`.
+
+### Comprobaciones
+
+```bash
+npm run lint
+npx tsc --noEmit
+```
+
+## 4. Funcionalidades
+
+| Rol        | Funcionalidad                                                                                          |
+| ---------- | ------------------------------------------------------------------------------------------------------ |
+| Público    | Crear una cuenta como estudiante o docente e iniciar sesión.                                           |
+| Estudiante | Consultar recursos, abrir sus enlaces, agregarlos a favoritos y calificarlos de una a cinco estrellas. |
+| Estudiante | Consultar la lista de favoritos.                                                                       |
+| Docente    | Consultar los recursos, crear nuevos, editar sus datos y eliminarlos.                                  |
+
+La aplicación consume los endpoints de autenticación y recursos del backend. Las operaciones que requieren sesión envían el token almacenado por la aplicación.
+
+## 5. Despliegue
+
+No hay un despliegue configurado o una URL publicada para este frontend en el repositorio. El archivo [`app.json`](./app.json) habilita la salida web estática (`web.output: "static"`), pero todavía no existe `eas.json` ni un flujo EAS de CI/CD. El despliegue del backend también es independiente; configura `EXPO_PUBLIC_API_URL` con una API accesible antes de compilar o publicar el frontend.
+
+### Publicar la versión web con EAS Hosting
+
+Con una cuenta de Expo y EAS CLI disponible:
+
+```bash
+npx expo export --platform web
+npx eas-cli@latest deploy
+```
+
+El primer comando genera la versión web estática en `dist/`; el segundo publica una implementación de vista previa y muestra su URL. Para publicar la versión de producción:
+
+```bash
+npx eas-cli@latest deploy --prod
+```
+
+### Crear builds móviles con EAS Build
+
+Configura EAS Build una vez y luego genera el build de la plataforma deseada:
+
+```bash
+npx eas-cli@latest build:configure
+npx eas-cli@latest build --platform android
+npx eas-cli@latest build --platform ios
+```
+
+EAS puede solicitar configuración de credenciales de firma. Para publicar en Google Play o App Store también se necesitan las cuentas de desarrollador correspondientes. Consulta la [guía de builds para tiendas](https://docs.expo.dev/deploy/build-project/) y la [guía de despliegue web](https://docs.expo.dev/deploy/web/) de Expo.
+
+## 6. Enlaces del proyecto
+
+- **Repositorio del frontend:** [MadeInRodri/frontend-recursos](https://github.com/MadeInRodri/frontend-recursos)
+- **Repositorio de la API:** [MadeInRodri/api-recursos](https://github.com/MadeInRodri/api-recursos)
+- **URL publicada del frontend:** pendiente de despliegue.
+- **URL publicada de la API:** pendiente de publicación según la documentación del backend.

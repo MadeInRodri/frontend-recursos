@@ -7,6 +7,7 @@ import { useAuthStore } from "../store/useAuthStore";
 
 export default function RootLayout() {
   const token = useAuthStore((state) => state.token);
+  const user = useAuthStore((state) => state.user);
   const segments = useSegments();
   const router = useRouter();
   const [hasHydrated, setHasHydrated] = useState(
@@ -33,11 +34,14 @@ export default function RootLayout() {
 
     if (!token && !inAuthGroup) {
       router.replace("/(auth)/login");
-    } else if (token && (inAuthGroup || segments[0] === "index")) {
-      // Si hay sesión y está en login o en la ruta inicial, enviamos a recursos.
-      router.replace("/(tabs)/recursos");
+    } else if (token && inAuthGroup) {
+      const initialRoute =
+        user?.rol.trim().toLowerCase() === "docente"
+          ? "/(docente)/crear"
+          : "/(tabs)/recursos";
+      router.replace(initialRoute);
     }
-  }, [hasHydrated, token, segments, router]);
+  }, [hasHydrated, token, user, segments, router]);
 
   return (
     <View style={{ flex: 1 }}>
