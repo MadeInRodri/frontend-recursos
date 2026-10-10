@@ -136,28 +136,7 @@ export default function FavoritosScreen() {
                   <MaterialIcons name="open-in-new" size={16} color="white" />
                 </Pressable>
 
-                <View style={styles.footerRow}>
-                  {/* <View style={styles.starsContainer}>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Pressable
-                        key={star}
-                        onPress={() => handleCalificar(recurso.id, star)}
-                        style={styles.starPressable}
-                      >
-                        <MaterialIcons
-                          name="star-outline"
-                          size={24}
-                          color="#eab308"
-                        />
-                      </Pressable>
-                    ))}
-                  </View> */}
-
-                  {/* Como ya estamos en favoritos, podemos poner una estrella llena fija para indicar su estado */}
-                  {/* <View style={styles.favoriteBadge}>
-                    <MaterialIcons name="star" size={20} color="#16a34a" />
-                  </View> */}
-                </View>
+                <View style={styles.footerRow}></View>
               </View>
             </View>
           ))}

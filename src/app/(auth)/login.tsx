@@ -60,7 +60,7 @@ export default function LoginScreen() {
         // al detectar que ya hay un token en el store.
       }
     } catch (error: any) {
-      // Capturamos el error si las credenciales son inválidas[cite: 2]
+      // Capturamos el error si las credenciales son inválidas
       const errorMessage =
         error.response?.data?.error || "Error de conexión con el servidor.";
       Toast.show({

@@ -52,7 +52,7 @@ export default function EditarRecursoScreen() {
   const cargarRecurso = async () => {
     setIsLoading(true);
     try {
-      // Utilizamos la búsqueda por ID que configuramos en la API[cite: 2]
+      // Utilizamos la búsqueda por ID que configuramos en la API
       const data = await getRecursos(id);
 
       if (data && data.length > 0) {

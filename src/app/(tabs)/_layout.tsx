@@ -62,7 +62,7 @@ export default function TabsLayout() {
   );
 }
 
-// Estilos CSS puros para reemplazar NativeWind
+// Estilos CSS puros
 const styles = StyleSheet.create({
   logoutButton: {
     marginRight: 16,

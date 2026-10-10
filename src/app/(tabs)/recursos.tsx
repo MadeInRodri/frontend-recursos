@@ -42,7 +42,7 @@ export default function RecursosScreen() {
     }
   };
 
-  // Función para abrir el enlace del recurso[cite: 1, 2]
+  // Función para abrir el enlace del recurso
   const handleAcceder = async (url: string) => {
     const supported = await Linking.canOpenURL(url);
     if (supported) {
@@ -56,7 +56,7 @@ export default function RecursosScreen() {
     }
   };
 
-  // Función para agregar a favoritos[cite: 1, 2]
+  // Función para agregar a favoritos
   const handleAgregarFavorito = async (id: number) => {
     try {
       const response = await agregarAFavoritos(id);
@@ -66,7 +66,7 @@ export default function RecursosScreen() {
         text2: response.mensaje || "Recurso agregado a tus favoritos.",
       });
     } catch (error: any) {
-      // Captura el error de duplicidad de la API si ya está en favoritos[cite: 2]
+      // Captura el error de duplicidad de la API si ya está en favoritos
       const errorMessage =
         error.response?.data?.error || "Error al agregar a favoritos.";
       Toast.show({
@@ -77,7 +77,7 @@ export default function RecursosScreen() {
     }
   };
 
-  // Función para calificar el recurso (1 a 5 estrellas)[cite: 2]
+  // Función para calificar el recurso (1 a 5 estrellas)
   const handleCalificar = async (id: number, puntuacion: number) => {
     try {
       const response = await calificarRecurso(id, puntuacion);
@@ -115,7 +115,7 @@ export default function RecursosScreen() {
         <View style={styles.gridContainer}>
           {recursos.map((recurso) => (
             <View key={recurso.id} style={styles.card}>
-              {/* Imagen del recurso o placeholder si es null[cite: 2] */}
+              {/* Imagen del recurso o placeholder si es null */}
               {recurso.imagen ? (
                 <Image
                   source={{ uri: recurso.imagen }}
@@ -158,7 +158,7 @@ export default function RecursosScreen() {
 
                 {/* Estrellas y botón de favorito */}
                 <View style={styles.footerRow}>
-                  {/* Calificación interactiva (1 a 5 estrellas)[cite: 2] */}
+                  {/* Calificación interactiva (1 a 5 estrellas) */}
                   <View style={styles.starsContainer}>
                     {[1, 2, 3, 4, 5].map((star) => (
                       <Pressable
@@ -175,7 +175,7 @@ export default function RecursosScreen() {
                     ))}
                   </View>
 
-                  {/* Botón de Agregar a Favoritos[cite: 1] */}
+                  {/* Botón de Agregar a Favoritos */}
                   <Pressable
                     onPress={() => handleAgregarFavorito(recurso.id)}
                     style={({ pressed }) => [

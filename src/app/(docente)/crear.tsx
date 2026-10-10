@@ -73,7 +73,7 @@ export default function DocenteDashboardScreen() {
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
     try {
-      // Agregamos la imagen placeholder automáticamente como solicitaste
+      // Agregamos la imagen placeholder automáticamente
       const nuevoRecurso: RecursoInput = {
         ...data,
         imagen:

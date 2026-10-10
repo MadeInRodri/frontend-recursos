@@ -50,7 +50,7 @@ export default function RegisterScreen() {
         router.replace("/(auth)/login");
       }
     } catch (error: any) {
-      // Capturamos los errores del backend (ej. contraseña débil, correo repetido)
+      // Capturamos los errores del backend
       const errorMessage =
         error.response?.data?.error || "Ocurrió un error en el servidor.";
       Toast.show({
